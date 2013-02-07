@@ -30,3 +30,5 @@ After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>
 * Setup a vim error format
 * Provide task to install error format
 * Possibly reformat log output for easier consumption
+
+[Alois Cochard's blog post]: http://aloiscochard.blogspot.co.uk/2013/02/quick-bug-fixing-in-scala-with-sbt-and.html
