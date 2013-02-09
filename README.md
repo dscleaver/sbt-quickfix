@@ -27,8 +27,11 @@ After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>
 
 ## To Do ## 
 
-* Setup a vim error format
-* Provide task to install error format
+Items that I want to look into in the future:
+
+* Setup a vim error format (or plugin file)
+* Provide task to install error format (or plugin file)
 * Possibly reformat log output for easier consumption
+* Add ctags generation possibly turning this into a full vim plugin
 
 [Alois Cochard's blog post]: http://aloiscochard.blogspot.co.uk/2013/02/quick-bug-fixing-in-scala-with-sbt-and.html
