@@ -1,10 +1,10 @@
-# sbt-quickfix #
+# sbt-quickfix
 
 This is an sbt plugin that generates a quickfix file that can be used with Vim.
 
 Inspired by [Alois Cochard's blog post] on setting up quickfix using a bash wrapper around sbt..
 
-## Usage ##
+## Usage
 
 Add this to your `~/.sbt/plugins/plugins.sbt`:
 
@@ -12,7 +12,7 @@ Add this to your `~/.sbt/plugins/plugins.sbt`:
 
 *Note: this plugin was built for sbt 0.12.*
 
-## Vim Integration ##
+## Vim Integration
 
 Add the following lines to your `~/.vimrc`:
 
@@ -25,7 +25,7 @@ Add the following lines to your `~/.vimrc`:
 
 After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>fn` to move to the next.
 
-## To Do ## 
+## To Do 
 
 Items that I want to look into in the future:
 
