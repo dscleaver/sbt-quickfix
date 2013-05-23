@@ -28,7 +28,7 @@ After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>
 
 By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be changed before running install as follows:
 
-   set QuickFixKeys.pluginBaseDirectory := new File("intended/directory") 
+    set QuickFixKeys.pluginBaseDirectory := new File("intended/directory") 
 
 ### Previous Integration
 
@@ -52,3 +52,4 @@ Items that I want to look into in the future:
 * Watch for test failures and write to file as well
 
 [Alois Cochard's blog post]: http://aloiscochard.blogspot.co.uk/2013/02/quick-bug-fixing-in-scala-with-sbt-and.html
+[Pathogen]: https://github.com/tpope/vim-pathogen
