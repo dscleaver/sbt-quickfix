@@ -2,19 +2,24 @@ package org.dscleaver.sbt
 
 import sbt._
 import Keys._
+import sbt.IO._
 import quickfix.QuickFixLogger
+import quickfix.VimPlugin
 
 object SbtQuickFix extends Plugin {
 
   object QuickFixKeys {
     val quickFixDirectory = target in config("quickfix")
+    val quickFixInstall = TaskKey[Unit]("install-vim-plugin")
+    val vimPluginBaseDirectory = baseDirectory in quickFixInstall
   }
 
   import QuickFixKeys._
 
-  override val settings = Seq(
-   quickFixDirectory <<= target / "quickfix",
-   extraLoggers <<= (quickFixDirectory, extraLoggers) apply { (target, currentFunction) =>
+  override  val settings = Seq(
+    quickFixDirectory <<= target / "quickfix",
+    vimPluginBaseDirectory := new File(System.getenv("HOME")) / ".vim" / "bundle",
+    extraLoggers <<= (quickFixDirectory, extraLoggers) apply { (target, currentFunction) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
         if(key.scope.task.toOption.get.label equals "compile")
@@ -22,7 +27,9 @@ object SbtQuickFix extends Plugin {
         else
           loggers
       }
-    }
+    },
+    quickFixInstall <<= (vimPluginBaseDirectory, streams) map VimPlugin.install
+   
   )
-        
+
 }
