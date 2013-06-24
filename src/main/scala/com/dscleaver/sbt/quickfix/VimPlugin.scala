@@ -1,4 +1,4 @@
-package org.dscleaver.sbt.quickfix
+package com.dscleaver.sbt.quickfix
 
 import java.io.File
 import sbt._

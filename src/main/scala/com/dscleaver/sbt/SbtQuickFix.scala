@@ -1,4 +1,4 @@
-package org.dscleaver.sbt
+package com.dscleaver.sbt
 
 import sbt._
 import Keys._
@@ -28,6 +28,7 @@ object SbtQuickFix extends Plugin {
           loggers
       }
     },
+    testListeners <+= (quickFixDirectory) apply QuickFixTestListener
     quickFixInstall <<= (vimPluginBaseDirectory, streams) map VimPlugin.install
    
   )
