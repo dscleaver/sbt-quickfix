@@ -3,8 +3,7 @@ package com.dscleaver.sbt
 import sbt._
 import Keys._
 import sbt.IO._
-import quickfix.QuickFixLogger
-import quickfix.VimPlugin
+import quickfix.{QuickFixLogger, VimPlugin, QuickFixTestListener}
 
 object SbtQuickFix extends Plugin {
 
@@ -28,7 +27,9 @@ object SbtQuickFix extends Plugin {
           loggers
       }
     },
-    testListeners <+= (quickFixDirectory) apply QuickFixTestListener
+    testListeners <+= (quickFixDirectory, sources in Compile, sources in Test) map { (target, compileSources, testSources) => 
+      QuickFixTestListener(target / "sbt.quickfix", compileSources ++ testSources)
+    },
     quickFixInstall <<= (vimPluginBaseDirectory, streams) map VimPlugin.install
    
   )
