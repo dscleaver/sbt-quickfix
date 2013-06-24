@@ -28,7 +28,7 @@ After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>
 
 By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be changed before running install as follows:
 
-   set QuickFixKeys.pluginBaseDirectory := new File("intended/directory") 
+   set QuickFixKeys.pluginBaseDirectory := file("intended/directory") 
 
 ### Previous Integration
 

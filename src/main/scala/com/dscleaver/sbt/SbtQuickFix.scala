@@ -18,7 +18,7 @@ object SbtQuickFix extends Plugin {
 
   override  val settings = Seq(
     quickFixDirectory <<= target / "quickfix",
-    vimPluginBaseDirectory := new File(System.getenv("HOME")) / ".vim" / "bundle",
+    vimPluginBaseDirectory := file(System.getenv("HOME")) / ".vim" / "bundle",
     extraLoggers <<= (quickFixDirectory, extraLoggers) apply { (target, currentFunction) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
