@@ -49,7 +49,6 @@ Items that I want to look into in the future:
 
 * Possibly reformat log output for easier consumption
 * Add ctags generation possibly turning this into a full vim plugin
-* Watch for test failures and write to file as well
 
 [Alois Cochard's blog post]: http://aloiscochard.blogspot.co.uk/2013/02/quick-bug-fixing-in-scala-with-sbt-and.html
 [Pathogen]: https://github.com/tpope/vim-pathogen
