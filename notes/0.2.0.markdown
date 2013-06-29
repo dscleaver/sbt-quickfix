@@ -1,0 +1,6 @@
+This release adds the following features:
+
+* Jump to test failures
+* Can install the error formats for use with [vim-pathogen][] 
+
+  [vim-pathogen]: https://github.com/tpope/vim-pathogen
