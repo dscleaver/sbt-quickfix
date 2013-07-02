@@ -22,7 +22,7 @@ This command will replace the plugin files whenever it is run, so it is recommen
 
 ### Using the files in Vim
 
-After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>fn` to move to the next.
+After a compile or test, assuming there was an error, SBT will tell Vim to open the quickfix file.  This assumes that you only have one instance of Vim running.
 
 ### Installation Location
 
@@ -37,9 +37,6 @@ The initial version of this plugin required that you add the following lines to 
     set errorformat=%E\ %#[error]\ %#%f:%l:\ %m,%-Z\ %#[error]\ %p^,%-C\ %#[error]\ %m
     set errorformat+=,%W\ %#[warn]\ %#%f:%l:\ %m,%-Z\ %#[warn]\ %p^,%-C\ %#[warn]\ %m
     set errorformat+=,%-G%.%#
-    
-    noremap <silent> <Leader>ff :cf target/quickfix/sbt.quickfix<CR>
-    noremap <silent> <Leader>fn :cn<CR>
 
 These lines should be removed from `~/.vimrc'
 
