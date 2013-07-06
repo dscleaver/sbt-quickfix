@@ -22,7 +22,6 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
     writeFailure(event)
     if (enableServer && event.detail.exists(e => e.result == Failure)) {
       call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
-      call(vimExec, "<esc>:cwindow<cr>".format(output.toString))
     }
   }
  
@@ -38,15 +37,16 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
     } append(output, "error", file, line, detail.error.getMessage)
 
   def find(error: Throwable): Option[(File, Int)] = error match {
-    case e: org.scalatest.exceptions.TestFailedException =>
-      for {
-        filename <- e.failedCodeFileName
-        fqfile <- srcFiles.filter(_.toString.endsWith(filename)).headOption
-        line <- e.failedCodeLineNumber
-      } yield (fqfile, line)
-    case t: Throwable =>
-      println(t)
-      findInStackTrace(error.getStackTrace())
+    case e: { def failedCodeStackDepth: Int } => 
+      try {
+        val stackTrace = error.getStackTrace()(e.failedCodeStackDepth)
+        for { 
+          file <- findSource(stackTrace.getFileName) 
+        } yield (file, stackTrace.getLineNumber)
+      } catch {
+        case _ => 
+          findInStackTrace(error.getStackTrace)
+      }
   }
 
   def findInStackTrace(trace: Array[StackTraceElement]): Option[(File, Int)] = 

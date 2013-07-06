@@ -24,7 +24,6 @@ class QuickFixLogger(val output: File, vimExec: String, enableServer: Boolean) e
   def handleDebugMessage(message: String) =
     if (enableServer && message.toLowerCase.contains("compilation failed")) {
       call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
-      call(vimExec, "<esc>:cwindow<cr>".format(output.toString))
     }
 
   def handleInfoMessage(message: String) = {
