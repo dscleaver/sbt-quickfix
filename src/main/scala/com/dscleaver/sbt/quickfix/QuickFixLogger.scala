@@ -10,7 +10,7 @@ object QuickFixLogger {
     append(output, prefix, "%s:%d: %s".format(file, line, message))
 }
 
-class QuickFixLogger(val output: File, vimExec: String) extends BasicLogger {
+class QuickFixLogger(val output: File, vimExec: String, enableServer: Boolean) extends BasicLogger {
   import QuickFixLogger._
   import VimInteraction._
 
@@ -22,7 +22,7 @@ class QuickFixLogger(val output: File, vimExec: String) extends BasicLogger {
   }
 
   def handleDebugMessage(message: String) =
-    if (message.toLowerCase.contains("compilation failed")) {
+    if (enableServer && message.toLowerCase.contains("compilation failed")) {
       call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
       call(vimExec, "<esc>:cwindow<cr>".format(output.toString))
     }
