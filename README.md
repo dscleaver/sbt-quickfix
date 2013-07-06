@@ -22,7 +22,11 @@ This command will replace the plugin files whenever it is run, so it is recommen
 
 ### Using the files in Vim
 
-After a compile simply hit `<Leader>ff` to jump to the first error and `<Leader>fn` to move to the next.
+After a compile or test, assuming there was an error, a quickfix file will be created that Vim can use.
+
+If your copy of Vim was compiled with [+clientserver] and you've enabled the `vim-enable-server` flag in your SBT project (default is `true`), then this plugin will automatically load the quickfix file into Vim once it's been created.
+
+If you don't have [+clientserver] enabled in Vim, or you have disabled the `vim-enable-server` feature of the plugin, then you can use a Vim mapping to load the file.  By default the mapping is `<leader>ff`, but you can change this if you wish.
 
 ### Installation Location
 
@@ -37,7 +41,7 @@ The initial version of this plugin required that you add the following lines to 
     set errorformat=%E\ %#[error]\ %#%f:%l:\ %m,%-Z\ %#[error]\ %p^,%-C\ %#[error]\ %m
     set errorformat+=,%W\ %#[warn]\ %#%f:%l:\ %m,%-Z\ %#[warn]\ %p^,%-C\ %#[warn]\ %m
     set errorformat+=,%-G%.%#
-    
+
     noremap <silent> <Leader>ff :cf target/quickfix/sbt.quickfix<CR>
     noremap <silent> <Leader>fn :cn<CR>
 
@@ -52,3 +56,4 @@ Items that I want to look into in the future:
 
 [Alois Cochard's blog post]: http://aloiscochard.blogspot.co.uk/2013/02/quick-bug-fixing-in-scala-with-sbt-and.html
 [Pathogen]: https://github.com/tpope/vim-pathogen
+[+clientserver]: http://vimhelp.appspot.com/remote.txt.html#clientserver
