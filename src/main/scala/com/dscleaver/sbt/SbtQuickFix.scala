@@ -12,13 +12,13 @@ object SbtQuickFix extends Plugin {
     val quickFixInstall = TaskKey[Unit]("install-vim-plugin")
     val vimEnableServer = SettingKey[Boolean]("vim-enable-server", "Enables communication with the Vim server - requires that Vim has been compiled with +clientserver")
     val vimExecutable = SettingKey[String]("vim-executable", "The path to the vim executable, or just 'vim' if it's in the PATH already")
-    val vimPluginBaseDirectory = baseDirectory in quickFixInstall
+    val vimPluginBaseDirectory = SettingKey[File]("vim-plugin-directory", "The path where vim plugins should be installed")
   }
 
   import QuickFixKeys._
 
   override val projectSettings = Seq(
-    quickFixDirectory in ThisBuild <<= target / "quickfix",
+    quickFixDirectory <<= target / "quickfix",
     vimPluginBaseDirectory in ThisBuild := file(System.getenv("HOME")) / ".vim" / "bundle",
     vimEnableServer in ThisBuild := true,
     extraLoggers <<= (quickFixDirectory, extraLoggers, vimExecutable, vimEnableServer) apply { (target, currentFunction, vimExec, enableServer) =>

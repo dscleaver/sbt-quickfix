@@ -8,7 +8,7 @@ Inspired by [Alois Cochard's blog post] on setting up quickfix using a bash wrap
 
 Add this to your `~/.sbt/plugins/plugins.sbt`:
 
-    addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.3.0")
+    addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.3.1")
 
 *Note: this plugin was built for sbt 0.12+.*
 
