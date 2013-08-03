@@ -10,7 +10,13 @@ version := {
 
 resolvers += "sonatype-releases" at "https://oss.sonatype.org/service/local/repositories/releases/content/"
 
+scalacOptions += "-unchecked"
+
 publishMavenStyle := false
+
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "2.0.M5b" % "provided"
+)
 
 publishTo <<= (version) { v =>
   def scalasbt(repo: String) = ("scalasbt " + repo, "http://repo.scala-sbt.org/scalasbt/sbt-plugin-" + repo)

@@ -2,26 +2,40 @@ package com.dscleaver.sbt.quickfix
 
 import sbt._
 
-class QuickFixLogger(val output: File) extends BasicLogger {
+object QuickFixLogger {
+  def append(output: File, prefix: String, message: String): Unit = 
+    IO.append(output, "[%s] %s\n".format(prefix, message))
+
+  def append(output: File, prefix: String, file: File, line: Int, message: String): Unit = 
+    append(output, prefix, "%s:%d: %s".format(file, line, message))
+}
+
+class QuickFixLogger(val output: File, vimExec: String, enableServer: Boolean) extends BasicLogger {
+  import QuickFixLogger._
+  import VimInteraction._
 
   def log(level: Level.Value, message: => String): Unit = level match {
-      case Level.Info => handleInfoMessage(message)
-      case Level.Error => handleErrorMessage(message)
-      case Level.Warn => handleWarnMessage(message)
-      case _ => ()
+    case Level.Info => handleInfoMessage(message)
+    case Level.Error => handleErrorMessage(message)
+    case Level.Warn => handleWarnMessage(message)
+    case _ => handleDebugMessage(message)
   }
 
-  def handleInfoMessage(message: String) =
+  def handleDebugMessage(message: String) =
+    if (enableServer && message.toLowerCase.contains("compilation failed")) {
+      call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
+    }
+
+  def handleInfoMessage(message: String) = {
     if(message startsWith "Compiling") {
       IO.delete(output)
       IO.touch(List(output))
     } else ()
+  }
 
-  def handleErrorMessage(message: String) = 
-    IO.append(output, "[error] " + message + "\n")
+  def handleErrorMessage(message: String) = append(output, "error", message)
 
-  def handleWarnMessage(message: String) =
-    IO.append(output, "[warn] " + message + "\n")
+  def handleWarnMessage(message: String) = append(output, "warn", message)
 
   def control(event: ControlEvent.Value, message: => String): Unit = ()
 

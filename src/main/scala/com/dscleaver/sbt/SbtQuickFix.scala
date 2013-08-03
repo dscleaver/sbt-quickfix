@@ -10,28 +10,30 @@ object SbtQuickFix extends Plugin {
   object QuickFixKeys {
     val quickFixDirectory = target in config("quickfix")
     val quickFixInstall = TaskKey[Unit]("install-vim-plugin")
+    val vimEnableServer = SettingKey[Boolean]("vim-enable-server", "Enables communication with the Vim server - requires that Vim has been compiled with +clientserver")
+    val vimExecutable = SettingKey[String]("vim-executable", "The path to the vim executable, or just 'vim' if it's in the PATH already")
     val vimPluginBaseDirectory = baseDirectory in quickFixInstall
   }
 
   import QuickFixKeys._
 
-  override  val settings = Seq(
+  override val settings = Seq(
     quickFixDirectory <<= target / "quickfix",
     vimPluginBaseDirectory := file(System.getenv("HOME")) / ".vim" / "bundle",
-    extraLoggers <<= (quickFixDirectory, extraLoggers) apply { (target, currentFunction) =>
+    vimEnableServer := true,
+    extraLoggers <<= (quickFixDirectory, extraLoggers, vimExecutable, vimEnableServer) apply { (target, currentFunction, vimExec, enableServer) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
         if(key.scope.task.toOption.get.label equals "compile")
-          new QuickFixLogger(target / "sbt.quickfix") +: loggers
+          new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
         else
           loggers
       }
     },
-    testListeners <+= (quickFixDirectory, sources in Compile, sources in Test) map { (target, compileSources, testSources) => 
-      QuickFixTestListener(target / "sbt.quickfix", compileSources ++ testSources)
+    testListeners <+= (quickFixDirectory, sources in Test, vimExecutable, vimEnableServer) map { (target, testSources, vimExec, enableServer) => 
+      QuickFixTestListener(target / "sbt.quickfix", testSources, vimExec, enableServer)
     },
-    quickFixInstall <<= (vimPluginBaseDirectory, streams) map VimPlugin.install
-   
+    quickFixInstall <<= (vimPluginBaseDirectory, streams) map VimPlugin.install,
+    vimExecutable := "gvim"
   )
-
 }
