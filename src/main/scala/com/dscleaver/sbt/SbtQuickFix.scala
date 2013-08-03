@@ -17,10 +17,10 @@ object SbtQuickFix extends Plugin {
 
   import QuickFixKeys._
 
-  override val settings = Seq(
-    quickFixDirectory <<= target / "quickfix",
-    vimPluginBaseDirectory := file(System.getenv("HOME")) / ".vim" / "bundle",
-    vimEnableServer := true,
+  override val projectSettings = Seq(
+    quickFixDirectory in ThisBuild <<= target / "quickfix",
+    vimPluginBaseDirectory in ThisBuild := file(System.getenv("HOME")) / ".vim" / "bundle",
+    vimEnableServer in ThisBuild := true,
     extraLoggers <<= (quickFixDirectory, extraLoggers, vimExecutable, vimEnableServer) apply { (target, currentFunction, vimExec, enableServer) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
@@ -33,7 +33,7 @@ object SbtQuickFix extends Plugin {
     testListeners <+= (quickFixDirectory, sources in Test, vimExecutable, vimEnableServer) map { (target, testSources, vimExec, enableServer) => 
       QuickFixTestListener(target / "sbt.quickfix", testSources, vimExec, enableServer)
     },
-    quickFixInstall <<= (vimPluginBaseDirectory, streams) map VimPlugin.install,
-    vimExecutable := "gvim"
+    quickFixInstall in ThisBuild <<= (vimPluginBaseDirectory, streams) map VimPlugin.install,
+    vimExecutable in ThisBuild := "gvim"
   )
 }
