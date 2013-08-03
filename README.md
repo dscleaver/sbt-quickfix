@@ -8,9 +8,9 @@ Inspired by [Alois Cochard's blog post] on setting up quickfix using a bash wrap
 
 Add this to your `~/.sbt/plugins/plugins.sbt`:
 
-    addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.2.0")
+    addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.3.0")
 
-*Note: this plugin was built for sbt 0.12.*
+*Note: this plugin was built for sbt 0.12+.*
 
 ## Vim Integration
 
@@ -30,9 +30,9 @@ If you don't have [+clientserver] enabled in Vim, or you have disabled the `vim-
 
 ### Installation Location
 
-By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be changed before running install as follows:
+By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be added to your global config as follows:
 
-   set QuickFixKeys.pluginBaseDirectory := file("intended/directory") 
+   QuickFixKeys.pluginBaseDirectory := file("intended/directory") 
 
 ### Previous Integration
 
@@ -53,6 +53,7 @@ Items that I want to look into in the future:
 
 * Possibly reformat log output for easier consumption
 * Add ctags generation possibly turning this into a full vim plugin
+* Allow vim server name to be overridden by system property
 
 [Alois Cochard's blog post]: http://aloiscochard.blogspot.co.uk/2013/02/quick-bug-fixing-in-scala-with-sbt-and.html
 [Pathogen]: https://github.com/tpope/vim-pathogen

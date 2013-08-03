@@ -1,0 +1,4 @@
+This release adds the following features:
+
+* Directly opens the quickfix in Vim with +clientserver
+* Allows overriding of properties in your global config
