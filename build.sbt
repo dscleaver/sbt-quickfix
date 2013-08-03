@@ -5,7 +5,7 @@ name := "sbt-quickfix"
 organization := "com.dscleaver.sbt"
 
 version := {
-  "0.2.0-" + Process("git rev-parse HEAD").lines.head
+  "0.3.0-" + Process("git rev-parse HEAD").lines.head
 }
 
 resolvers += "sonatype-releases" at "https://oss.sonatype.org/service/local/repositories/releases/content/"
