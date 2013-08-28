@@ -8,9 +8,9 @@ Inspired by [Alois Cochard's blog post] on setting up quickfix using a bash wrap
 
 Add this to your `~/.sbt/plugins/plugins.sbt`:
 
-    addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.3.1")
+    addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.4.0")
 
-*Note: this plugin was built for sbt 0.12+.*
+*Note: this plugin was built for sbt 0.13 use version 0.3.1 for sbt 0.12*
 
 ## Vim Integration
 
