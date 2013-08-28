@@ -6,7 +6,7 @@ import std._
 
 object VimPlugin {
 
-  def install(baseDirectory: File, s: TaskStreams[Project.ScopedKey[_]]) {
+  def install(baseDirectory: File, s: TaskStreams[ScopedKey[_]]) {
     val plugin = baseDirectory / "vim-sbt" 
     if(plugin.exists) {
       s.log.info("Removing previous installation at " + plugin)

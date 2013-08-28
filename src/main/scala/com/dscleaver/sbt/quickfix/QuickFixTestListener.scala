@@ -2,7 +2,8 @@ package com.dscleaver.sbt.quickfix
 
 import sbt._
 import sbt.TestResult.Value
-import org.scalatools.testing.Result._
+import sbt.testing.Status._
+import sbt.testing.Event
 
 class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String, enableServer: Boolean) extends TestReportListener {
   import QuickFixLogger._
@@ -20,7 +21,7 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
 
   def testEvent(event: TestEvent): Unit = {
     writeFailure(event)
-    if (enableServer && event.detail.exists(e => e.result == Failure)) {
+    if (enableServer && event.detail.exists(e => e.status == Failure)) {
       call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
     }
   }
@@ -32,9 +33,12 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
   def writeFailure(event: TestEvent): Unit =
     for {
       detail <- event.detail
-      if detail.result == Failure
-      (file, line) <- find(detail.error) 
-    } append(output, "error", file, line, detail.error.getMessage)
+      if writeable(detail)
+      (file, line) <- find(detail.throwable.get) 
+    } append(output, "error", file, line, detail.throwable.get.getMessage)
+
+  def writeable(detail: Event): Boolean =
+    detail.status == Failure && detail.throwable.isDefined
 
   def find(error: Throwable): Option[(File, Int)] = error match {
     case e: { def failedCodeStackDepth: Int } => 

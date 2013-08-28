@@ -1,0 +1,3 @@
+This release adds the following features:
+
+* Updates plugin to sbt 0.13

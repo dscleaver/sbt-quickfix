@@ -24,7 +24,8 @@ object SbtQuickFix extends Plugin {
     extraLoggers <<= (quickFixDirectory, extraLoggers, vimExecutable, vimEnableServer) apply { (target, currentFunction, vimExec, enableServer) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
-        if(key.scope.task.toOption.get.label equals "compile")
+        val taskOption = key.scope.task.toOption
+        if(taskOption.map(_.label)  == Some("compile"))
           new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
         else
           loggers
