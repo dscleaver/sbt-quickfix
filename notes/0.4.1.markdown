@@ -1,0 +1,5 @@
+This release fixes several issues around:
+
+* Discovering the user's home directory in Windows
+* Using the correct command for gvim on Windows
+* Capturing continuation lines in the error output 
