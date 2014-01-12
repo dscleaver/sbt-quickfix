@@ -4,9 +4,11 @@ name := "sbt-quickfix"
 
 organization := "com.dscleaver.sbt"
 
-versionWithGit
+//versionWithGit
 
-git.baseVersion := "0.4.0"
+version := "0.4.1-LOCAL"
+
+git.baseVersion := "0.4.1"
 
 resolvers += "sonatype-releases" at "https://oss.sonatype.org/service/local/repositories/releases/content/"
 
@@ -15,7 +17,7 @@ scalacOptions += "-unchecked"
 publishMavenStyle := false
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.0.M5b" % "provided"
+  "org.scalatest" %% "scalatest" % "2.0" % "provided"
 )
 
 publishTo <<= (version) { v =>

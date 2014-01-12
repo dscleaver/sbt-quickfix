@@ -3,7 +3,7 @@ package com.dscleaver.sbt
 import sbt._
 import Keys._
 import sbt.IO._
-import quickfix.{QuickFixLogger, VimPlugin, QuickFixTestListener}
+import quickfix.{ QuickFixLogger, VimPlugin, QuickFixTestListener }
 
 object SbtQuickFix extends Plugin {
 
@@ -19,22 +19,22 @@ object SbtQuickFix extends Plugin {
 
   override val projectSettings = Seq(
     quickFixDirectory <<= target / "quickfix",
-    vimPluginBaseDirectory in ThisBuild := file(System.getenv("HOME")) / ".vim" / "bundle",
+    vimPluginBaseDirectory in ThisBuild := file(System.getProperty("user.home")) / ".vim" / "bundle",
     vimEnableServer in ThisBuild := true,
     extraLoggers <<= (quickFixDirectory, extraLoggers, vimExecutable, vimEnableServer) apply { (target, currentFunction, vimExec, enableServer) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
         val taskOption = key.scope.task.toOption
-        if(taskOption.map(_.label)  == Some("compile"))
+        if (taskOption.map(_.label) == Some("compile"))
           new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
         else
           loggers
       }
     },
-    testListeners <+= (quickFixDirectory, sources in Test, vimExecutable, vimEnableServer) map { (target, testSources, vimExec, enableServer) => 
+    testListeners <+= (quickFixDirectory, sources in Test, vimExecutable, vimEnableServer) map { (target, testSources, vimExec, enableServer) =>
       QuickFixTestListener(target / "sbt.quickfix", testSources, vimExec, enableServer)
     },
     quickFixInstall in ThisBuild <<= (vimPluginBaseDirectory, streams) map VimPlugin.install,
-    vimExecutable in ThisBuild := "gvim"
+    vimExecutable in ThisBuild := (if (System.getProperty("os.name").startsWith("Win")) "gvim.bat" else "gvim")
   )
 }
