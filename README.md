@@ -6,7 +6,7 @@ Inspired by [Alois Cochard's blog post] on setting up quickfix using a bash wrap
 
 ## Usage
 
-Add this to your `~/.sbt/plugins/plugins.sbt`:
+Add this to your `~/.sbt/0.13/plugins/plugins.sbt`:
 
     addSbtPlugin("com.dscleaver.sbt" % "sbt-quickfix" % "0.4.0")
 
@@ -30,7 +30,7 @@ If you don't have [+clientserver] enabled in Vim, or you have disabled the `vim-
 
 ### Installation Location
 
-By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be added to your global config as follows:
+By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be added to your global config (e.g. `~/.sbt/0.13/global.sbt`) as follows:
 
    QuickFixKeys.pluginBaseDirectory := file("intended/directory") 
 
