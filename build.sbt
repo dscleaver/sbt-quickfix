@@ -4,9 +4,9 @@ name := "sbt-quickfix"
 
 organization := "com.dscleaver.sbt"
 
-//versionWithGit
+versionWithGit
 
-version := "0.4.1-LOCAL"
+//version := "0.4.1-LOCAL"
 
 git.baseVersion := "0.4.1"
 
