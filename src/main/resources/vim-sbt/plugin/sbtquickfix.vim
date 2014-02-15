@@ -2,25 +2,23 @@ set errorformat=%E\ %#[error]\ %#%f:%l:\ %m,%-Z\ %#[error]\ %p^,%-G\ %#[error]\ 
 set errorformat+=%W\ %#[warn]\ %#%f:%l:\ %m,%-Z\ %#[warn]\ %p^,%-G\ %#[warn]\ %m
 set errorformat+=%C\ %#%m
 
-let s:relativeQFLocation = "target/quickfix/sbt.quickfix"
-
-function! sbtquickfix#LoadQuickFix()
-  " Only works on *nixes
-  let path = split(expand("%:p:h"), "/")
-  let found = 0
-  while !found && len(path) != 0
-    let file = "/" . join(path, "/") . "/" . s:relativeQFLocation
-    if filereadable(file)
-      exec ":cf " . file
-      return
-    endif
-    let path = path[0:-2]
-  endwhile
-  echoerr "Unable to locate quickfix file"
+function! sbtquickfix#FindSCMDir()
+  let filedir = expand('%:p:h')
+  let dir = finddir('.git', filedir . ';')
+  let dir = substitute(dir, '/.git', '', '')
+  return dir
 endfunction
 
-let g:quickfix_load_mapping="<leader>ff"
-let g:quickfix_next_mapping="<leader>fn"
+function! sbtquickfix#LoadQuickFix()
+  let dir = sbtquickfix#FindSCMDir()
+  let tempfile = tempname()
+  let cmd = 'ls -t $(find ' . dir . ' -name sbt.quickfix) | xargs cat > ' . tempfile
+  call system(cmd)
+  exec ':cf ' . tempfile
+endfunction
+
+let g:quickfix_load_mapping="<leader>qf"
+let g:quickfix_next_mapping="<leader>qn"
 
 function! s:MakeMappings()
   if g:quickfix_load_mapping != ""
@@ -35,3 +33,4 @@ augroup SbtVim
   autocmd!
   autocmd BufRead *.scala call s:MakeMappings()
 augroup END
+
