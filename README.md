@@ -16,7 +16,7 @@ Add this to your `~/.sbt/0.13/plugins/plugins.sbt`:
 
 If your vim is setup to use [Pathogen], then the vim-sbt plugin can be installed with this command:
 
-    sbt install-vim-plugin
+    sbt installVimPlugin  #'sbt install-vim-plugin' for older versions of sbt...
 
 This command will replace the plugin files whenever it is run, so it is recommended when upgrading versions of the plugin.
 
@@ -33,6 +33,10 @@ If you don't have [+clientserver] enabled in Vim, or you have disabled the `vim-
 By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be added to your global config (e.g. `~/.sbt/0.13/global.sbt`) as follows:
 
    QuickFixKeys.pluginBaseDirectory := file("intended/directory") 
+   
+You can disable the vim-enable-server flag in the global.sbt as follows: 
+
+   QuickFixKeys.vimEnableServer := false
 
 ### Previous Integration
 
