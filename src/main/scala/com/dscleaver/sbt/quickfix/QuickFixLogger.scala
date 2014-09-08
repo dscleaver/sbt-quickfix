@@ -25,6 +25,9 @@ class QuickFixLogger(val output: File, vimExec: String, enableServer: Boolean) e
     if (message.toLowerCase.contains("initial source changes:")) {
       IO.delete(output)
       IO.touch(List(output))
+      if (enableServer) {
+        call(vimExec, "<esc>:cgetfile %s<cr>".format(output.toString))
+      }
     }
 
     if (enableServer && message.toLowerCase.contains("compilation failed")) {
