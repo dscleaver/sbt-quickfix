@@ -5,7 +5,7 @@ import Keys._
 import sbt.IO._
 import quickfix.{ QuickFixLogger, VimPlugin, QuickFixTestListener }
 
-object SbtQuickFix extends Plugin {
+object SbtQuickFix extends AutoPlugin {
 
   object QuickFixKeys {
     val quickFixDirectory = target in config("quickfix")
@@ -16,6 +16,8 @@ object SbtQuickFix extends Plugin {
   }
 
   import QuickFixKeys._
+
+  override def trigger = allRequirements
 
   override val projectSettings = Seq(
     quickFixDirectory <<= target / "quickfix",
