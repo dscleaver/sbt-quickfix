@@ -22,7 +22,7 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
   def testEvent(event: TestEvent): Unit = {
     writeFailure(event)
     if (enableServer && event.detail.exists(e => e.status == Failure)) {
-      call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
+      call(vimExec, "cfile %s".format(output.toString))
     }
   }
  

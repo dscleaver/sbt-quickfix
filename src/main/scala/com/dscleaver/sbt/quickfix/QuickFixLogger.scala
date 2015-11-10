@@ -26,12 +26,12 @@ class QuickFixLogger(val output: File, vimExec: String, enableServer: Boolean) e
       IO.delete(output)
       IO.touch(List(output))
       if (enableServer) {
-        call(vimExec, "<esc>:cgetfile %s<cr>".format(output.toString))
+        call(vimExec, "cgetfile %s".format(output.toString))
       }
     }
 
     if (enableServer && message.toLowerCase.contains("compilation failed")) {
-      call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
+      call(vimExec, "cfile %s".format(output.toString))
     }
   }
 
