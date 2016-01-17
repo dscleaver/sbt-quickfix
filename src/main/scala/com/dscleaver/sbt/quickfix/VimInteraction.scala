@@ -4,8 +4,8 @@ import sbt._
 
 object VimInteraction {
 
-  lazy val vimServerName: String = sys.props.get("sbtquickfix.vim.servername").getOrElse("SBT_QUICKFIX")
-  lazy val nvimSocketFile: String = sys.props.get("sbtquickfix.nvim.socket").getOrElse("/tmp/nvim_sbt_quickfix.sock")
+  lazy val vimServerName: String = sys.props.get("sbtquickfix.vim.servername").getOrElse("GVIM")
+  lazy val nvimSocketFile: String = sys.props.get("sbtquickfix.nvim.socket").getOrElse("/tmp/nvim.sock")
 
   def call(vimExec: String, command: String): Int = vimExec match {
     case "nvim" => Process(List("python", "-c", pyScript(command))).! // TODO revisit when neovim #1750 is resolved
