@@ -5,7 +5,7 @@ import Keys._
 import sbt.IO._
 import quickfix.{ QuickFixLogger, VimPlugin, QuickFixTestListener }
 
-object SbtQuickFix extends Plugin {
+object SbtQuickFix extends AutoPlugin {
 
   object QuickFixKeys {
     val quickFixDirectory = target in config("quickfix")
@@ -17,6 +17,8 @@ object SbtQuickFix extends Plugin {
 
   import QuickFixKeys._
 
+  override def trigger = allRequirements
+
   override val projectSettings = Seq(
     quickFixDirectory <<= target / "quickfix",
     vimPluginBaseDirectory in ThisBuild := file(System.getProperty("user.home")) / ".vim" / "bundle",
@@ -25,7 +27,7 @@ object SbtQuickFix extends Plugin {
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
         val taskOption = key.scope.task.toOption
-        if (taskOption.map(_.label) == Some("compile"))
+        if (taskOption.map(_.label.startsWith("compile")) == Some(true))
           new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
         else
           loggers
