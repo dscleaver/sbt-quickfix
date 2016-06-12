@@ -32,7 +32,7 @@ If you don't have [+clientserver] enabled in Vim, or you have disabled the `vim-
 
 By default the plugin will install to `~/.vim/bundle`. This plugin base directory can be added to your global config (e.g. `~/.sbt/0.13/global.sbt`) as follows:
 
-   QuickFixKeys.pluginBaseDirectory := file("intended/directory") 
+   QuickFixKeys.vimPluginBaseDirectory := file("intended/directory") 
    
 You can disable the vim-enable-server flag in the global.sbt as follows: 
 
