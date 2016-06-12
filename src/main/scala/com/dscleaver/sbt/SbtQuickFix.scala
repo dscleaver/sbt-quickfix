@@ -20,14 +20,14 @@ object SbtQuickFix extends AutoPlugin {
   override def trigger = allRequirements
 
   override val projectSettings = Seq(
-    quickFixDirectory <<= target / "quickfix",
+    quickFixDirectory <<= (target (_ / "quickfix")),
     vimPluginBaseDirectory in ThisBuild := file(System.getProperty("user.home")) / ".vim" / "bundle",
     vimEnableServer in ThisBuild := true,
     extraLoggers <<= (quickFixDirectory, extraLoggers, vimExecutable, vimEnableServer) apply { (target, currentFunction, vimExec, enableServer) =>
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
         val taskOption = key.scope.task.toOption
-        if (taskOption.map(_.label.startsWith("compile")) == Some(true))
+        if (taskOption.exists(_.label.startsWith("compile")))
           new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
         else
           loggers

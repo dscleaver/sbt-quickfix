@@ -1,5 +1,7 @@
 package com.dscleaver.sbt.quickfix
 
+import org.scalatest.exceptions.StackDepth
+import scala.util.control.NonFatal
 import sbt._
 import sbt.TestResult.Value
 import sbt.testing.Status._
@@ -9,11 +11,6 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
   import QuickFixLogger._
   import VimInteraction._
 
-  type TFE = Exception {
-    def failedCodeFileName: Option[String]
-    def failedCodeLineNumber: Option[Int]
-  }
-
   IO.delete(output)
   IO.touch(List(output))
 
@@ -22,10 +19,10 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
   def testEvent(event: TestEvent): Unit = {
     writeFailure(event)
     if (enableServer && event.detail.exists(e => e.status == Failure)) {
-      call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
+      val _ = call(vimExec, "<esc>:cfile %s<cr>".format(output.toString))
     }
   }
- 
+
   def endGroup(name: String, t: Throwable): Unit = {}
 
   def endGroup(name: String, v: Value): Unit = {}
@@ -34,26 +31,26 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
     for {
       detail <- event.detail
       if writeable(detail)
-      (file, line) <- find(detail.throwable.get) 
+      (file, line) <- find(detail.throwable.get)
     } append(output, "error", file, line, detail.throwable.get.getMessage)
 
   def writeable(detail: Event): Boolean =
     detail.status == Failure && detail.throwable.isDefined
 
   def find(error: Throwable): Option[(File, Int)] = error match {
-    case e: { def failedCodeStackDepth: Int } => 
+    case e: StackDepth =>
       try {
         val stackTrace = error.getStackTrace()(e.failedCodeStackDepth)
-        for { 
-          file <- findSource(stackTrace.getFileName) 
+        for {
+          file <- findSource(stackTrace.getFileName)
         } yield (file, stackTrace.getLineNumber)
       } catch {
-        case _ => 
+        case NonFatal(e) =>
           findInStackTrace(error.getStackTrace)
       }
   }
 
-  def findInStackTrace(trace: Array[StackTraceElement]): Option[(File, Int)] = 
+  def findInStackTrace(trace: Array[StackTraceElement]): Option[(File, Int)] =
     { for {
       elem <- trace
       file <- findSource(elem.getFileName)
