@@ -25,10 +25,12 @@ object SbtQuickFix extends Plugin {
       (key: ScopedKey[_]) => {
         val loggers = currentFunction(key)
         val taskOption = key.scope.task.toOption
-        if (taskOption.map(_.label) == Some("compile"))
-          new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
-        else
-          loggers
+        taskOption.map(_.label) match {
+          case Some(task) if task.toLowerCase.contains("compile") =>
+            new QuickFixLogger(target / "sbt.quickfix", vimExec, enableServer) +: loggers
+          case _ =>
+            loggers
+        }
       }
     },
     testListeners <+= (quickFixDirectory, sources in Test, vimExecutable, vimEnableServer) map { (target, testSources, vimExec, enableServer) =>
