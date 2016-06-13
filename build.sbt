@@ -6,7 +6,7 @@ organization := "com.dscleaver.sbt"
 
 scalaVersion := "2.10.6"
 
-licenses += ("BSD 3-Clause", url("https://opensource.org/licenses/BSD-3-Clause")),
+licenses += ("BSD 3-Clause", url("https://opensource.org/licenses/BSD-3-Clause"))
 
 versionWithGit
 
