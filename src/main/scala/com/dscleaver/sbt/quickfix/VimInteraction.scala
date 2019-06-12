@@ -1,6 +1,6 @@
 package com.dscleaver.sbt.quickfix
 
-import sbt._
+import scala.sys.process._
 
 object VimInteraction {
   def call(vimExec: String, command: Seq[String]): Int = Process(List(vimExec, "--remote-send") ++ command).!

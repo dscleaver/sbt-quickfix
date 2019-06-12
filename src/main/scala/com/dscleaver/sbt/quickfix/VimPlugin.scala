@@ -13,7 +13,7 @@ object VimPlugin {
     }
     s.log.info("Installing to " + plugin)
     IO.createDirectory(plugin)
-    val jar = IO.classLocationFile[VimPlugin.type]
-    val files = IO.unzip(jar, baseDirectory, "vim-sbt/*")
+    val jar = IO.classLocationFileOption[VimPlugin.type].get
+    val _ = IO.unzip(jar, baseDirectory, "vim-sbt/*")
   }
 }
