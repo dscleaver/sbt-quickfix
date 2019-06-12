@@ -3,12 +3,12 @@ package com.dscleaver.sbt.quickfix
 import org.scalatest.exceptions.StackDepth
 import scala.util.control.NonFatal
 import sbt._
-import sbt.TestResult.Value
+import sbt.protocol.testing.TestResult
 import sbt.testing.Status._
 import sbt.testing.Event
 
 class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String, enableServer: Boolean) extends TestReportListener {
-  import QuickFixLogger._
+  import QuickFixAppender._
   import VimInteraction._
 
   IO.delete(output)
@@ -25,7 +25,7 @@ class QuickFixTestListener(output: File, srcFiles: => Seq[File], vimExec: String
 
   def endGroup(name: String, t: Throwable): Unit = {}
 
-  def endGroup(name: String, v: Value): Unit = {}
+  def endGroup(name: String, v: TestResult): Unit = {}
 
   def writeFailure(event: TestEvent): Unit =
     for {
